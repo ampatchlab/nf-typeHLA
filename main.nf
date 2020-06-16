@@ -151,6 +151,18 @@ def usage() {
             Comma-separated list of sample and readgroup inputs
 
 
+    Reference genome params:
+
+        --genome STR
+            Reference genome name [Default: ${defaults.genome}]
+
+        --idxbase FILE
+            Override the BWA indexed FASTA file with FILE [Default: ${defaults.idxbase ?: null}]
+
+        --hla_resource DIR
+            Override the HLA resource directory with DIR [Default: ${defaults.hla_resource ?: null}]
+
+
     Adapter trimming params:
 
         --adapters STR
@@ -161,15 +173,6 @@ def usage() {
 
         --r2_adapter_file FILE
             Override the R2 adapter file with FILE [Default: ${defaults.r2_adapter_file ?: null}]
-
-
-    Reference genome params:
-
-        --idxbase FILE
-            Override the BWA indexed FASTA file with FILE [Default: ${defaults.idxbase ?: null}]
-
-        --hla_resource DIR
-            Override the HLA resource directory with DIR [Default: ${defaults.hla_resource ?: null}]
 
 
     Output params:

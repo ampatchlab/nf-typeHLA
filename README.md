@@ -35,6 +35,18 @@ Required params:
         Comma-separated list of sample and readgroup inputs
 
 
+Reference genome params:
+
+    --genome STR
+        Reference genome name [Default: hs38DH]
+
+    --idxbase FILE
+        Override the BWA indexed FASTA file with FILE [Default: null]
+
+    --hla_resource DIR
+        Override the HLA resource directory with DIR [Default: null]
+
+
 Adapter trimming params:
 
     --adapters STR
@@ -45,15 +57,6 @@ Adapter trimming params:
 
     --r2_adapter_file FILE
         Override the R2 adapter file with FILE [Default: null]
-
-
-Reference genome params:
-
-    --idxbase FILE
-        Override the BWA indexed FASTA file with FILE [Default: null]
-
-    --hla_resource DIR
-        Override the HLA resource directory with DIR [Default: null]
 
 
 Output params:
