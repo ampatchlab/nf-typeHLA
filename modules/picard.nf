@@ -45,7 +45,7 @@ process mark_duplicates {
     publishDir(
         path: "${params.publish_dir}/picard/mark_duplicates",
         enabled: params.publish_everything || params.publish_mark_duplicates,
-        mode: 'copy'
+        mode: params.publish_mode,
     )
 
     input:
