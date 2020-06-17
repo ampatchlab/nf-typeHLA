@@ -59,6 +59,12 @@ Adapter trimming params:
         Override the R2 adapter file with FILE [Default: null]
 
 
+Qualimap params:
+
+    --qualimap_gff FILE
+        Feature file with regions of interest in GFF/GTF or BED format [Default: null]
+
+
 Output params:
 
     --publish_dir DIR

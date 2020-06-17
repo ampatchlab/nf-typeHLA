@@ -29,6 +29,7 @@ include fastqc from '../modules/fastqc.nf' params( params )
 include hla_typing from '../modules/bwakit.nf' params( params )
 include mark_duplicates from '../modules/picard.nf' params( params )
 include multiqc from '../modules/multiqc.nf' params( params )
+include qualimap from '../modules/qualimap.nf' params( params )
 include samtools_merge from '../modules/samtools.nf' params( params )
 include samtools_sort from '../modules/samtools.nf' params( params )
 include samtools_stats from '../modules/samtools.nf' params( params )
@@ -42,6 +43,7 @@ workflow type_hla {
     cutadapt_adapter_files
     bwamem_index
     hla_resource_dir
+    qualimap_gff
     multiqc_cfg
 
     main:
@@ -102,13 +104,21 @@ workflow type_hla {
         | mark_duplicates
 
 
-    // STEP 6 - Samtools stats
+    // STEP 6 - Run Qualimap
+    mark_duplicates.out.alignments \
+        | map { bam, bai -> bam } \
+        | set { qualimap_inputs }
+
+    qualimap( qualimap_inputs, qualimap_gff )
+
+
+    // STEP 7 - Run SAMtools stats
     mark_duplicates.out.alignments \
         | map { bam, bai -> bam } \
         | samtools_stats
 
 
-    // STEP 7 - Run HLA typing
+    // STEP 8 - Run HLA typing
     sample_readgroups \
         | map { sample_key, readgroup, reads ->
             tuple( sample_key.toString(), sample_key, readgroup )
@@ -122,11 +132,12 @@ workflow type_hla {
     hla_typing( hla_typing_inputs, hla_resource_dir )
 
 
-    // STEP 8 - Create a MultiQC report
+    // STEP 9 - Create a MultiQC report
     Channel.empty() \
         | mix( cutadapt.out.logs ) \
         | mix( fastqc.out ) \
         | mix( mark_duplicates.out.metrics ) \
+        | mix( qualimap.out ) \
         | mix( samtools_stats.out ) \
         | collect \
         | set { multiqc_inputs }

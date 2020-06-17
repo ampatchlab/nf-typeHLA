@@ -62,6 +62,9 @@ params.hla_resource = params.genome in params.genomes
     ? params.genomes[ params.genome ].hla_resource
     : null
 
+// Qualimap feature file
+params.qualimap_gff = "${baseDir}/assets/null"
+
 
 /*
  * Workflows
@@ -87,6 +90,7 @@ workflow {
         adapters,
         bwa_index,
         params.hla_resource,
+        params.qualimap_gff,
         params.multiqc_config,
     )
 }
@@ -173,6 +177,12 @@ def usage() {
 
         --r2_adapter_file FILE
             Override the R2 adapter file with FILE [Default: ${defaults.r2_adapter_file ?: null}]
+
+
+    Qualimap params:
+
+        --qualimap_gff FILE
+            Feature file with regions of interest in GFF/GTF or BED format [Default: ${defaults.qualimap_gff ?: null}]
 
 
     Output params:

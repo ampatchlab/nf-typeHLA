@@ -21,4 +21,22 @@ module_order:
         path_filters:
             - '*.trimmed_fastqc.zip'
     - picard
+    - qualimap
     - samtools
+
+extra_fn_clean_exts:
+    - type: 'truncate'
+      pattern: '.markdup'
+      module:
+        - qualimap
+        - Samtools
+
+run_modules:
+    - fastqc
+    - cutadapt
+    - picard
+    - qualimap
+    - samtools
+
+exclude_modules:
+    - custom_content
