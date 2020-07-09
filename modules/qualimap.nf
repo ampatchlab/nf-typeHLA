@@ -31,6 +31,9 @@ params.publish_mode = 'copy'
 
 params.publish_qualimap = false
 
+params.num_reads = 1000
+params.num_windows = 400
+
 
 /*
  * Processes
@@ -65,10 +68,13 @@ process qualimap {
     export JAVA_OPTS="${JAVA_OPTS}"
     qualimap bamqc \\
         -bam "${bam}" \\
+        -nr ${params.num_reads} \\
         -nt ${task.cpus} \\
+        -nw ${params.num_windows} \\
         -outdir "${bam.baseName}" \\
         ${feature_file} \\
         --paint-chromosome-limits \\
+        --collect-overlap-pairs \\
         --skip-duplicated
     """
 }
