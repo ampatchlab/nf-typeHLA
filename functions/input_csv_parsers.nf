@@ -23,7 +23,11 @@ vim: syntax=groovy
 import nextflow.splitter.CsvSplitter
 
 
-def parse_input_csv( csv ) {
+def parse_readgroup_csv( csv ) {
+
+    if( !csv ) {
+        return Channel.empty()
+    }
 
     def splitter = new CsvSplitter().options( header:true )
     def reader = new BufferedReader( new FileReader( csv ) )
@@ -58,7 +62,7 @@ def parse_input_csv( csv ) {
         fastq_cols = se_fastq_cols
     }
     else {
-        error "${csv.name} - Invalid column header configuration: ${header}"
+        error "${csv} - Invalid column header configuration: ${header}"
     }
 
     def readgroups = []
@@ -71,7 +75,7 @@ def parse_input_csv( csv ) {
     while( row = splitter.fetchRecord( reader ) ) {
 
         if( !header_cols.every() ) {
-            error "${csv.name} - Missing one of ${header_cols} for row: ${row}"
+            error "${csv} - Missing one of ${header_cols} for row: ${row}"
         }
 
         def sample_fields = sample_cols.collect { row[ it ].replaceAll( /\./, '_' ) }
@@ -80,7 +84,7 @@ def parse_input_csv( csv ) {
         def readgroup = sample_fields.last()
 
         if( readgroup in readgroups ) {
-            error "${csv.name} - Must not use sample/readgroup labels more than once: ${readgroup}"
+            error "${csv} - Cannot use this sample/readgroup label more than once: ${readgroup}"
         }
         readgroups.add( readgroup )
 
@@ -91,10 +95,10 @@ def parse_input_csv( csv ) {
             def extensions = [ '.fastq', '.fq', '.fastq.gz', '.fq.gz', '.fastq.bz2', '.fq.bz2' ]
 
             if( !extensions.find { fastq.name.endsWith( it ) } ) {
-                error "${csv.name} - FASTQ file has an unsupported extension: ${fastq.name}"
+                error "${csv} - FASTQ file has an unsupported extension: ${fastq.name}"
             }
             if( fastq.name in fastq_filenames ) {
-                error "${csv.name} - FASTQ file must not be used more than once: ${fastq.name}"
+                error "${csv} - FASTQ file must not be used more than once: ${fastq.name}"
             }
             fastq_filenames.add( fastq.name )
         }

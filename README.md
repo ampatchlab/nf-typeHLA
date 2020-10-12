@@ -31,7 +31,7 @@ Nextflow execution options:
 
 Required params:
 
-    --csv FILE
+    --readgroup_csv FILE
         Comma-separated list of sample and readgroup inputs
 
 

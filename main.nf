@@ -38,7 +38,7 @@ check_params()
  * Modules
  */
 
-include { parse_input_csv } from './functions/input_csv_parsers.nf' params( params )
+include { parse_readgroup_csv } from './functions/input_csv_parsers.nf' params( params )
 include { type_hla } from './workflows/type_hla.nf' params( params )
 
 
@@ -72,7 +72,7 @@ params.qualimap_feature_file = "${baseDir}/assets/null"
 
 workflow {
 
-    input_ch = parse_input_csv( params.csv )
+    readgroup_inputs = parse_readgroup_csv( params.readgroup_csv )
 
     adapters = [ params.r1_adapter_file, params.r2_adapter_file ]
 
@@ -86,7 +86,7 @@ workflow {
     ]
 
     type_hla(
-        input_ch,
+        readgroup_inputs,
         adapters,
         bwa_index,
         params.hla_resource,
@@ -95,6 +95,7 @@ workflow {
     )
 }
 
+
 workflow.onComplete {
 
     log.info "Workflow completed at: ${workflow.complete}"
@@ -102,6 +103,7 @@ workflow.onComplete {
     log.info "Execution status: ${workflow.success ? 'success' : 'failed'}"
     log.info "Output directory: ${params.publish_dir}"
 }
+
 
 workflow.onError {
 
@@ -123,6 +125,11 @@ def check_params() {
     if( params.version ) {
         log.info( workflow.manifest.version )
         exit 0
+    }
+
+    if( !params.readgroup_csv ) {
+        log.info "Readgroup CSV not specified. Please using the `--readgroup_csv` parameter"
+        exit 1
     }
 }
 
@@ -151,7 +158,7 @@ def usage() {
 
     Required params:
 
-        --csv FILE
+        --readgroup_csv FILE
             Comma-separated list of sample and readgroup inputs
 
 
