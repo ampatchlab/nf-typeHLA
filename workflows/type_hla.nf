@@ -43,7 +43,7 @@ workflow type_hla {
     cutadapt_adapter_files
     bwamem_index
     hla_resource_dir
-    qualimap_gff
+    qualimap_feature_file
     multiqc_cfg
 
     main:
@@ -109,7 +109,7 @@ workflow type_hla {
         | map { bam, bai -> bam } \
         | set { qualimap_inputs }
 
-    qualimap( qualimap_inputs, qualimap_gff )
+    qualimap( qualimap_inputs, qualimap_feature_file )
 
 
     // STEP 7 - Run SAMtools stats

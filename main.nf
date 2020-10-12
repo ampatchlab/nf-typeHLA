@@ -63,7 +63,7 @@ params.hla_resource = params.genome in params.genomes
     : null
 
 // Qualimap feature file
-params.qualimap_gff = "${baseDir}/assets/null"
+params.qualimap_feature_file = "${baseDir}/assets/null"
 
 
 /*
@@ -90,7 +90,7 @@ workflow {
         adapters,
         bwa_index,
         params.hla_resource,
-        params.qualimap_gff,
+        params.qualimap_feature_file,
         params.multiqc_config,
     )
 }
@@ -181,8 +181,8 @@ def usage() {
 
     Qualimap params:
 
-        --qualimap_gff FILE
-            Feature file with regions of interest in GFF/GTF or BED format [Default: ${defaults.qualimap_gff ?: null}]
+        --qualimap_feature_file FILE
+            Feature file with regions of interest in GFF/GTF or BED format [Default: ${defaults.qualimap_feature_file ?: null}]
 
 
     Output params:

@@ -61,7 +61,7 @@ Adapter trimming params:
 
 Qualimap params:
 
-    --qualimap_gff FILE
+    --qualimap_feature_file FILE
         Feature file with regions of interest in GFF/GTF or BED format [Default: null]
 
 
