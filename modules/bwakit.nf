@@ -58,7 +58,7 @@ process bwamem {
     tuple sample, path("${readgroup}.hla.HLA-*.fq"), emit: hla_reads
 
     script:
-    def task_cpus = task.cpus > 1 ? task.cpus - 1 : task.cpus
+    def task_cpus = task.cpus > 2 ? task.cpus - 2 : task.cpus
 
     def idxbase = bwa_index.first().baseName
     def fastq_files = reads.collect { /"$it"/ }.join(' ')
