@@ -43,7 +43,7 @@ process mark_duplicates {
     label 'picard'
 
     publishDir(
-        path: "${params.publish_dir}/picard/mark_duplicates",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_mark_duplicates,
         mode: params.publish_mode,
     )

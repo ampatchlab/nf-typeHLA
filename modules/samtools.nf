@@ -45,7 +45,7 @@ process samtools_sort {
     label 'samtools'
 
     publishDir(
-        path: "${params.publish_dir}/samtools/sort",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_samtools_sort,
         mode: params.publish_mode,
     )
@@ -81,7 +81,7 @@ process samtools_merge {
     label 'samtools'
 
     publishDir(
-        path: "${params.publish_dir}/samtools/merge",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_samtools_merge,
         mode: params.publish_mode,
     )
@@ -111,7 +111,7 @@ process samtools_stats {
     label 'samtools'
 
     publishDir(
-        path: "${params.publish_dir}/samtools/stats",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_samtools_stats,
         mode: params.publish_mode,
     )

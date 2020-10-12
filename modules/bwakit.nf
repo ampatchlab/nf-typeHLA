@@ -44,7 +44,7 @@ process bwamem {
     label 'bwakit'
 
     publishDir(
-        path: "${params.publish_dir}/bwamem/${sample}",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_bwamem,
         mode: params.publish_mode,
     )
@@ -86,7 +86,7 @@ process hla_typing {
     label 'bwakit'
 
     publishDir(
-        path: "${params.publish_dir}/hla_typing/${sample}",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_hla_typing,
         mode: params.publish_mode,
     )

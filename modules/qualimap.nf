@@ -46,14 +46,14 @@ process qualimap {
     label 'qualimap'
 
     publishDir(
-        path: "${params.publish_dir}/qualimap",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_qualimap,
         mode: params.publish_mode,
     )
 
     input:
-    path(bam)
-    path(gff)
+    path bam
+    path gff
 
     output:
     path "${bam.baseName}"

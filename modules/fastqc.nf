@@ -43,7 +43,7 @@ process fastqc {
     label 'fastqc'
 
     publishDir(
-        path: "${params.publish_dir}/fastqc",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_fastqc,
         mode: params.publish_mode,
     )

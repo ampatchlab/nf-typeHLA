@@ -41,7 +41,7 @@ process multiqc {
     label 'multiqc'
 
     publishDir(
-        path: "${params.publish_dir}/multiqc",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_multiqc,
         mode: params.publish_mode,
     )

@@ -46,7 +46,7 @@ process cutadapt {
     label 'cutadapt'
 
     publishDir(
-        path: "${params.publish_dir}/cutadapt/${readgroup}",
+        path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
         enabled: params.publish_everything || params.publish_cutadapt,
         mode: params.publish_mode,
     )
