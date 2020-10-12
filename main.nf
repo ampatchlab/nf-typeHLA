@@ -35,10 +35,16 @@ check_params()
 
 
 /*
- * Modules
+ * Imports
  */
 
+// functions
 include { parse_readgroup_csv } from './functions/input_csv_parsers.nf' params( params )
+
+// modules
+include { multiqc } from './modules/multiqc.nf' params( params )
+
+// workflows
 include { dna_alignment } from './workflows/alignment.nf' params( params )
 
 
@@ -74,7 +80,7 @@ workflow {
 
     readgroup_inputs = parse_readgroup_csv( params.readgroup_csv )
 
-    adapters = [ params.r1_adapter_file, params.r2_adapter_file ]
+    cutadapt_adapter_files = [ params.r1_adapter_file, params.r2_adapter_file ]
 
     bwa_index = [
         params.idxbase + '.alt',
@@ -85,14 +91,17 @@ workflow {
         params.idxbase + '.sa',
     ]
 
+    // STEP 1 - Perform adapter trimming and alignment to the reference
     dna_alignment(
         readgroup_inputs,
-        adapters,
         bwa_index,
         params.hla_resource,
+        cutadapt_adapter_files,
         params.qualimap_feature_file,
-        params.multiqc_config,
     )
+
+    // STEP 2 - Create a MultiQC report
+    multiqc( dna_alignment.out.logs.collect(), params.multiqc_config )
 }
 
 

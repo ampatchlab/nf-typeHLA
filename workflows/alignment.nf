@@ -23,12 +23,11 @@ vim: syntax=groovy
  */
 
 
-include { bwamem } from '../modules/bwakit.nf' params( params )
+include { bwa_mem } from '../modules/bwakit.nf' params( params )
 include { cutadapt } from '../modules/cutadapt.nf' params( params )
 include { fastqc } from '../modules/fastqc.nf' params( params )
 include { hla_typing } from '../modules/bwakit.nf' params( params )
 include { mark_duplicates } from '../modules/picard.nf' params( params )
-include { multiqc } from '../modules/multiqc.nf' params( params )
 include { qualimap } from '../modules/qualimap.nf' params( params )
 include { samtools_merge } from '../modules/samtools.nf' params( params )
 include { samtools_sort } from '../modules/samtools.nf' params( params )
@@ -40,11 +39,11 @@ workflow dna_alignment {
     take:
 
     sample_readgroup_reads_tuples
-    cutadapt_adapter_files
-    bwamem_index
+    bwa_index
     hla_resource_dir
+    cutadapt_adapter_files
     qualimap_feature_file
-    multiqc_cfg
+
 
     main:
 
@@ -79,13 +78,13 @@ workflow dna_alignment {
         | map { sample_key, readgroup, reads -> tuple( readgroup, sample_key.toString() ) } \
         | join( cutadapt.out.trimmed_reads ) \
         | map { readgroup, sample, reads -> tuple( sample, readgroup, reads ) } \
-        | set { bwamem_inputs }
+        | set { bwa_mem_inputs }
 
-    bwamem( bwamem_inputs, bwamem_index )
+    bwa_mem( bwa_mem_inputs, bwa_index )
 
 
     // STEP 4 - Coordinate sort the aligned readgroups
-    bwamem.out.alignments \
+    bwa_mem.out.alignments \
         | map { sample, aligned_readgroup -> aligned_readgroup } \
         | samtools_sort \
         | map { bam, bai -> tuple( bam.getBaseName(3), tuple( bam, bai ) ) } \
@@ -123,7 +122,7 @@ workflow dna_alignment {
         | map { sample_key, readgroup, reads ->
             tuple( sample_key.toString(), sample_key, readgroup )
         } \
-        | join( bwamem.out.hla_reads ) \
+        | join( bwa_mem.out.hla_reads ) \
         | map { sample, sample_key, readgroup, hla_reads -> tuple( sample_key, hla_reads ) } \
         | groupTuple() \
         | map { sample, hla_reads -> tuple( sample, hla_reads.flatten() ) } \
@@ -132,15 +131,17 @@ workflow dna_alignment {
     hla_typing( hla_typing_inputs, hla_resource_dir )
 
 
-    // STEP 9 - Create a MultiQC report
-    Channel.empty() \
+    emit:
+
+    alignments = mark_duplicates.out.alignments \
+        | map { bam, bai -> tuple( bam.getBaseName(2), tuple( bam, bai ) ) }
+
+    hla_types = hla_typing.out
+
+    logs = Channel.empty() \
         | mix( cutadapt.out.logs ) \
         | mix( fastqc.out ) \
         | mix( mark_duplicates.out.metrics ) \
         | mix( qualimap.out ) \
-        | mix( samtools_stats.out ) \
-        | collect \
-        | set { multiqc_inputs }
-
-    multiqc( multiqc_inputs, multiqc_cfg )
+        | mix( samtools_stats.out )
 }

@@ -29,7 +29,7 @@ params.publish_dir = './results'
 params.publish_everything = false
 params.publish_mode = 'copy'
 
-params.publish_bwamem = false
+params.publish_bwa_mem = false
 params.publish_hla_typing = false
 
 
@@ -37,7 +37,7 @@ params.publish_hla_typing = false
  * Processes
  */
 
-process bwamem {
+process bwa_mem {
 
     tag { sample == readgroup ? sample : "${sample}:${readgroup}" }
 
@@ -45,7 +45,7 @@ process bwamem {
 
     publishDir(
         path: "${params.publish_dir}/${task.process.replaceAll(':', '/')}",
-        enabled: params.publish_everything || params.publish_bwamem,
+        enabled: params.publish_everything || params.publish_bwa_mem,
         mode: params.publish_mode,
     )
 
