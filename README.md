@@ -1,7 +1,7 @@
 # ampatchlab/nf-typeHLA
 
 [![Build Status](https://codebuild.ap-southeast-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiYWI0clRvd3JIOUNRWFFrajFwTTYrOHZha1FHQWVNa01ET2p1bUZ4cmRXRVdnUzRqVmFLV0dQWk1jT0VzWUZXMUNFRVRka28yaFFrQnNDWUg4M0llcDlvPSIsIml2UGFyYW1ldGVyU3BlYyI6InRpQkhSVVFkRThiQTBEQnQiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)](https://ap-southeast-2.console.aws.amazon.com/codesuite/codebuild/projects/nf-typeHLA/history)
-[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A520.04.1-brightgreen.svg)](https://www.nextflow.io/)
+[![Nextflow](https://img.shields.io/badge/nextflow-%E2%89%A520.07.1-brightgreen.svg)](https://www.nextflow.io/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 HLA typing Nextflow pipeline

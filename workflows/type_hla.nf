@@ -23,16 +23,16 @@ vim: syntax=groovy
  */
 
 
-include bwamem from '../modules/bwakit.nf' params( params )
-include cutadapt from '../modules/cutadapt.nf' params( params )
-include fastqc from '../modules/fastqc.nf' params( params )
-include hla_typing from '../modules/bwakit.nf' params( params )
-include mark_duplicates from '../modules/picard.nf' params( params )
-include multiqc from '../modules/multiqc.nf' params( params )
-include qualimap from '../modules/qualimap.nf' params( params )
-include samtools_merge from '../modules/samtools.nf' params( params )
-include samtools_sort from '../modules/samtools.nf' params( params )
-include samtools_stats from '../modules/samtools.nf' params( params )
+include { bwamem } from '../modules/bwakit.nf' params( params )
+include { cutadapt } from '../modules/cutadapt.nf' params( params )
+include { fastqc } from '../modules/fastqc.nf' params( params )
+include { hla_typing } from '../modules/bwakit.nf' params( params )
+include { mark_duplicates } from '../modules/picard.nf' params( params )
+include { multiqc } from '../modules/multiqc.nf' params( params )
+include { qualimap } from '../modules/qualimap.nf' params( params )
+include { samtools_merge } from '../modules/samtools.nf' params( params )
+include { samtools_sort } from '../modules/samtools.nf' params( params )
+include { samtools_stats } from '../modules/samtools.nf' params( params )
 
 
 workflow type_hla {

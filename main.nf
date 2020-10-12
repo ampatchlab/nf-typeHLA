@@ -23,7 +23,7 @@ vim: syntax=groovy
  */
 
 
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 import nextflow.config.ConfigParser
 
@@ -38,8 +38,8 @@ check_params()
  * Modules
  */
 
-include parse_input_csv from './functions/input_csv_parsers.nf' params( params )
-include type_hla from './workflows/type_hla.nf' params( params )
+include { parse_input_csv } from './functions/input_csv_parsers.nf' params( params )
+include { type_hla } from './workflows/type_hla.nf' params( params )
 
 
 /*

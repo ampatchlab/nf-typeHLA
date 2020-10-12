@@ -50,12 +50,12 @@ process bwamem {
     )
 
     input:
-    tuple sample, readgroup, path(reads)
+    tuple val(sample), val(readgroup), path(reads)
     path bwa_index
 
     output:
-    tuple sample, path("${readgroup}.aln.bam"), emit: alignments
-    tuple sample, path("${readgroup}.hla.HLA-*.fq"), emit: hla_reads
+    tuple val(sample), path("${readgroup}.aln.bam"), emit: alignments
+    tuple val(sample), path("${readgroup}.hla.HLA-*.fq"), emit: hla_reads
 
     script:
     def task_cpus = task.cpus > 2 ? task.cpus - 2 : task.cpus
@@ -92,11 +92,11 @@ process hla_typing {
     )
 
     input:
-    tuple sample, path("staged/fastq/*")
-    path("staged/resource_bundle")
+    tuple val(sample), path("staged/fastq/*")
+    path "staged/resource_bundle"
 
     output:
-    tuple sample, path("*/*.{fq,mag,sam,tsv}")
+    tuple val(sample), path("*/*.{fq,mag,sam,tsv}")
 
     shell:
     '''
