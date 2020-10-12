@@ -39,7 +39,7 @@ check_params()
  */
 
 include { parse_readgroup_csv } from './functions/input_csv_parsers.nf' params( params )
-include { type_hla } from './workflows/type_hla.nf' params( params )
+include { dna_alignment } from './workflows/alignment.nf' params( params )
 
 
 /*
@@ -67,7 +67,7 @@ params.qualimap_feature_file = "${baseDir}/assets/null"
 
 
 /*
- * Workflows
+ * Workflow
  */
 
 workflow {
@@ -85,7 +85,7 @@ workflow {
         params.idxbase + '.sa',
     ]
 
-    type_hla(
+    dna_alignment(
         readgroup_inputs,
         adapters,
         bwa_index,

@@ -35,7 +35,7 @@ include { samtools_sort } from '../modules/samtools.nf' params( params )
 include { samtools_stats } from '../modules/samtools.nf' params( params )
 
 
-workflow type_hla {
+workflow dna_alignment {
 
     take:
 
